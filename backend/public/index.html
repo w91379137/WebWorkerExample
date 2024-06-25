@@ -20,6 +20,16 @@
       );
     }
     document.getElementById('button').addEventListener('click', openSub);
+
+    setInterval(() => {
+      fetch('/log?page=index')
+      .then((response) => {
+        console.log(response); 
+      })
+      .catch((error) => {
+        console.log(`Error: ${error}`);
+      })
+    }, 5000);
   </script>
 </body>
 

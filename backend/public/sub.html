@@ -7,6 +7,26 @@
 
 <body>
   <h1>SUB</h1>
+  <button id="button">close sub</button>
+
+  <script>
+
+    const closeSub = () =>
+    {
+      window.close();
+    }
+    document.getElementById('button').addEventListener('click', closeSub);
+
+    setInterval(() => {
+      fetch('/log?page=sub')
+      .then((response) => {
+        console.log(response); 
+      })
+      .catch((error) => {
+        console.log(`Error: ${error}`);
+      })
+    }, 5000);
+  </script>
 </body>
 
 </html>
