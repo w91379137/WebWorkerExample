@@ -7,9 +7,40 @@
 
 <body>
   <h1>WORKER_INDEX</h1>
-  <button id="button">open sub</button>
+  <button id="openSub">open sub</button>
+  <button id="startWorker">start Worker</button>
+  <button id="stopWorker">stop Worker</button>
 
   <script>
+    if (window.Worker) {
+      let worker = undefined;
+      const startWorker = () => {
+        worker = new Worker('/javascripts/worker.js');
+        worker.onmessage = (event) => {
+            console.log('main receive', event.data);
+            if (event.data === 'doWork') {
+                fetch('/log?page=doWork')
+                .then((response) => {
+                    console.log(response); 
+                })
+                .catch((error) => {
+                    console.log(`Error: ${error}`);
+                })
+            }
+        };
+        worker.postMessage(['Hello', 'worker', 'start']);
+      }
+      document.getElementById('startWorker').addEventListener('click', startWorker);
+      
+      const stopWorker = () => {
+        worker.postMessage(['Hello', 'worker', 'stop']);
+        worker.terminate();
+      }
+      document.getElementById('stopWorker').addEventListener('click', stopWorker);
+      
+    } else {
+      console.log('Web Worker is not supported in this browser.');
+    } 
 
     const openSub = () =>
     {
@@ -19,20 +50,17 @@
           'toolbar=0, menubar=no',
       );
     }
-    document.getElementById('button').addEventListener('click', openSub);
+    document.getElementById('openSub').addEventListener('click', openSub);
 
-    if (window.Worker) {
-      const worker = new Worker('/javascripts/worker.js');
-      worker.onmessage = (event) => {
-        console.log('main receive', event.data);
-      };
-      setTimeout(() => {
-        worker.postMessage(['Hello', 'worker']);
-      }, 3000);
-      
-    } else {
-      console.log('Web Worker is not supported in this browser.');
-    }
+    setInterval(() => {
+      fetch('/log?page=worker_index')
+      .then((response) => {
+        console.log(response); 
+      })
+      .catch((error) => {
+        console.log(`Error: ${error}`);
+      })
+    }, 5000);
   </script>
 </body>
 
