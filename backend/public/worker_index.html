@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <title>INDEX</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>INDEX</h1>
+  <button id="button">open sub</button>
+
+  <script>
+
+    const openSub = () =>
+    {
+      window.open(
+          '/sub',
+          '_blank',
+          'toolbar=0, menubar=no',
+      );
+    }
+    document.getElementById('button').addEventListener('click', openSub);
+
+    if (window.Worker) {
+      const worker = new Worker('/javascripts/worker.js');
+      worker.postMessage(['Hello', 'worker']);
+      worker.onmessage = (event) => {
+        console.log(event.data);
+      }
+    } else {
+      console.log('Web Worker is not supported in this browser.');
+    }
+  </script>
+</body>
+
+</html>
