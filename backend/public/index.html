@@ -7,6 +7,20 @@
 
 <body>
   <h1>INDEX</h1>
+  <button id="button">open sub</button>
+
+  <script>
+
+    const openSub = () =>
+    {
+      window.open(
+          '/sub',
+          '_blank',
+          'toolbar=0, menubar=no',
+      );
+    }
+    document.getElementById('button').addEventListener('click', openSub);
+  </script>
 </body>
 
 </html>
