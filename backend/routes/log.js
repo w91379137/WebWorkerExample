@@ -7,7 +7,7 @@ var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'a'});
 
 var log = (message) => {
     const date = (new Date()).toISOString();
-    log_file.write(util.format(date + "\n" + message) + '\n');
+    log_file.write(util.format(date + " " + message) + '\n');
 }
 
 const handler = function(req, res, next) {
@@ -19,9 +19,9 @@ const handler = function(req, res, next) {
     if (req.method === 'POST') {
         param = req.body;
     }
-    log(JSON.stringify(param, null, 2));
+    log(JSON.stringify(param));
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(param, null, 2));
+    res.end(JSON.stringify(param));
 }
 
 router.get('/', handler);
