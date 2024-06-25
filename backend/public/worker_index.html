@@ -1,12 +1,12 @@
 <html>
 
 <head>
-  <title>INDEX</title>
+  <title>WORKER_INDEX</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
-  <h1>INDEX</h1>
+  <h1>WORKER_INDEX</h1>
   <button id="button">open sub</button>
 
   <script>
@@ -23,10 +23,13 @@
 
     if (window.Worker) {
       const worker = new Worker('/javascripts/worker.js');
-      worker.postMessage(['Hello', 'worker']);
       worker.onmessage = (event) => {
-        console.log(event.data);
-      }
+        console.log('main receive', event.data);
+      };
+      setTimeout(() => {
+        worker.postMessage(['Hello', 'worker']);
+      }, 3000);
+      
     } else {
       console.log('Web Worker is not supported in this browser.');
     }
