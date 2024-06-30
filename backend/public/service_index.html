@@ -13,8 +13,39 @@
   <h1 id="error"></h1>
 
   <script>
+    let isWorking = false;
+
+    // ====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====
+    const dowork = () => {
+      fetch('/log?page=service_index')
+      .then((response) => {
+        console.log(response); 
+      })
+      .catch((error) => {
+        console.log(`Error: ${error}`);
+      })
+    }
+
+    const loopFunc = (callback) => {
+      if (isWorking) {
+        dowork();
+        fetch('/delay')
+        .then((response) => {
+          console.log(response); 
+          callback(callback);
+        })
+        .catch((error) => {
+          console.log(`Error: ${error}`);
+        })
+      }
+    }
+    
+
+    // ====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====.====
+
+
     if ('serviceWorker' in navigator) {
-      let worker = undefined;
+      
       let msg = "";
       const startWorker = async () => {
         try {
@@ -35,12 +66,14 @@
             msg = `Error: ${error}`
         }
         document.getElementById('error').innerHTML = msg;
+
+        isWorking = true;
+        loopFunc(loopFunc);
       }
       document.getElementById('startWorker').addEventListener('click', startWorker);
       
       const stopWorker = () => {
-        worker.postMessage(['Hello', 'worker', 'stop']);
-        worker.terminate();
+        isWorking = false;
       }
       document.getElementById('stopWorker').addEventListener('click', stopWorker);
       
@@ -60,15 +93,13 @@
     }
     document.getElementById('openSub').addEventListener('click', openSub);
 
-    setInterval(() => {
-      fetch('/log?page=worker_index')
-      .then((response) => {
-        console.log(response); 
-      })
-      .catch((error) => {
-        console.log(`Error: ${error}`);
-      })
-    }, 5000);
+    
+
+    // setInterval(() => {
+    //   dowork();
+    // }, 5000);
+    
+    
   </script>
 </body>
 
