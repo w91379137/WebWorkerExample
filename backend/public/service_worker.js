@@ -28,7 +28,7 @@ const doWork = () => {
 
 this.addEventListener('activate', function(event){
   console.log('activated!')
-  id = setInterval(doWork, 5000);
+  id = setInterval(doWork, 50000);
 });
 
 this.addEventListener('fetch', (event) => {
